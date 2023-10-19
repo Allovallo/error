@@ -1,1 +1,1 @@
-import '../src/css/common.css'
+import './css/common.css'

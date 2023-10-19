@@ -1,10 +1,10 @@
 {
   "name": "error",
   "version": "1.0.0",
-  "description": "error",
-  "main": "index.js",
+  "description": "new Error",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "parcel src/*.html --no-cache",
+    "buid": "parcel build src/*.html --no-cache"
   },
   "repository": {
     "type": "git",
