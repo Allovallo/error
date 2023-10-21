@@ -150,14 +150,22 @@ class Error {
     }
 }
 
-class MyError extends Error {
-    constructor(message) {
+// class MyError extends Error {
+//     constructor(message) {
+//         super(message);
+//         this.name = this.constructor.name;
+//     }
+// }
+
+class ReadError extends Error {
+    constructor(message, cause) {
         super(message);
-        this.name = this.constructor.name;
+        this.cause = cause;
+        this.name = 'ReadError';
     }
 }
 
-class ValidationError extends MyError {
+class ValidationError extends Error {
     constructor(message) {
         super(message);
         this.name = "ValidationError";
@@ -172,28 +180,47 @@ class PropertyRequiredError extends ValidationError {
     }
 }
 
-function readUser(json) {
-    let user = JSON.parse(json);
-
+function validateUser(user) {
     if (!user.age) {
-        throw new ValidationError("Нема поля: age");
+        throw new PropertyRequiredError("age");
     }
     if (!user.name) {
-        throw new ValidationError("Нема поля: name");
+        throw new PropertyRequiredError("name");
     }
-    return user;
+}
+
+function readUser(json) {
+    let user;
+
+    try {
+        user = JSON.parse(json);
+    } catch (error) {
+        if (error instanceof SyntaxError) {
+            throw new ReadError("Синтаксична помилка", error);
+        } else {
+            throw error;
+        }
+    }
+
+    try {
+        validateUser(user);
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            throw new ReadError("Помилка валідації", error);
+        } else {
+            throw error;
+        }
+    }   
 }
 
 try {
-    let user = readUser('{"age": 25, "name": "John"}');
-} catch (error) {
-    if (error instanceof ValidationError) {
-        console.log("Некоректні дані: " + error.message);
-        console.log(error.name);
-        // console.log(error.property);
-    } else if(error instanceof SyntaxError) {
-        console.log("JSON Помилка Синтаксису: " + error.message);
+    readUser('{"age": 25, "name": "John"}');
+     readUser('{bad json}');   
+} catch (e) {
+    if (e instanceof ReadError) {
+        console.log(e);
+        console.log("Вихідна помилка: " + e.cause);
     } else {
-        throw error;
+        throw e;
     }
 }
