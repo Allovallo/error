@@ -150,7 +150,14 @@ class Error {
     }
 }
 
-class ValidationError extends Error {
+class MyError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
+
+class ValidationError extends MyError {
     constructor(message) {
         super(message);
         this.name = "ValidationError";
@@ -178,7 +185,7 @@ function readUser(json) {
 }
 
 try {
-    let user = readUser('{"age": 25}');
+    let user = readUser('{"age": 25, "name": "John"}');
 } catch (error) {
     if (error instanceof ValidationError) {
         console.log("Некоректні дані: " + error.message);
