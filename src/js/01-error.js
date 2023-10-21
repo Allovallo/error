@@ -117,27 +117,66 @@
 //     alert('finally');
 // }
 
-let num = +prompt("Введить позитивне ціле число", 35);
+// let num = +prompt("Введить позитивне ціле число", 35);
 
-let ditt, result;
+// let ditt, result;
 
-function fib (n) {
-    if (n < 0 || Math.trunc(n) != 0) {
-        throw new Error("Має бути ціле позитивне число!");
+// function fib (n) {
+//     if (n < 0 || Math.trunc(n) != 0) {
+//         throw new Error("Має бути ціле позитивне число!");
+//     }
+//     return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+// }
+
+// let start = Date.now();
+
+// try {
+//     result = fib(num);
+// } catch (e) {
+//     result = 0;
+// } finally {
+//     diff = Date.now() - start;
+// }
+
+// console.log(result || "Виникла помилка!");
+
+// console.log(`Виконання зайняло ${diff} мс`);
+
+class Error {
+    constructor(message) {
+        this.message = message;
+        this.name = 'Error';
+        // this.stack = <стек визовов>;
     }
-    return n <= 1 ? n : fib(n - 1) + fib(n - 2);
 }
 
-let start = Date.now();
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+    }
+}
+
+function readUser(json) {
+    let user = JSON.parse(json);
+
+    if (!user.age) {
+        throw new ValidationError("Нема поля: age");
+    }
+    if (!user.name) {
+        throw new ValidationError("Нема поля: name");
+    }
+    return user;
+}
 
 try {
-    result = fib(num);
-} catch (e) {
-    result = 0;
-} finally {
-    diff = Date.now() - start;
+    let user = readUser('{"age": 25, "name": "John"}');
+} catch (error) {
+    if (error instanceof ValidationError) {
+        console.log("Некоректні дані: " + error.message);
+    } else if(error instanceof SyntaxError) {
+        console.log("JSON Помилка Синтаксису: " + error.message);
+    } else {
+        throw error;
+    }
 }
-
-console.log(result || "Виникла помилка!");
-
-console.log(`Виконання зайняло ${diff} мс`);
