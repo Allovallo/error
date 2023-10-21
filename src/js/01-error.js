@@ -157,6 +157,14 @@ class ValidationError extends Error {
     }
 }
 
+class PropertyRequiredError extends ValidationError {
+    constructor(property) {
+        super("Нема властивості " + property);
+        this.name = "PropertyRequiredError";
+        this.property = property;
+    }
+}
+
 function readUser(json) {
     let user = JSON.parse(json);
 
@@ -170,10 +178,12 @@ function readUser(json) {
 }
 
 try {
-    let user = readUser('{"age": 25, "name": "John"}');
+    let user = readUser('{"age": 25}');
 } catch (error) {
     if (error instanceof ValidationError) {
         console.log("Некоректні дані: " + error.message);
+        console.log(error.name);
+        // console.log(error.property);
     } else if(error instanceof SyntaxError) {
         console.log("JSON Помилка Синтаксису: " + error.message);
     } else {
