@@ -142,13 +142,13 @@
 
 // console.log(`Виконання зайняло ${diff} мс`);
 
-class Error {
-    constructor(message) {
-        this.message = message;
-        this.name = 'Error';
-        // this.stack = <стек визовов>;
-    }
-}
+// class Error {
+//     constructor(message) {
+//         this.message = message;
+//         this.name = 'Error';
+//         // this.stack = <стек визовов>;
+//     }
+// }
 
 // class MyError extends Error {
 //     constructor(message) {
@@ -157,70 +157,93 @@ class Error {
 //     }
 // }
 
-class ReadError extends Error {
-    constructor(message, cause) {
-        super(message);
-        this.cause = cause;
-        this.name = 'ReadError';
+// class ReadError extends Error {
+//     constructor(message, cause) {
+//         super(message);
+//         this.cause = cause;
+//         this.name = 'ReadError';
+//     }
+// }
+
+// class ValidationError extends Error {
+//     constructor(message) {
+//         super(message);
+//         this.name = "ValidationError";
+//     }
+// }
+
+// class PropertyRequiredError extends ValidationError {
+//     constructor(property) {
+//         super("Нема властивості " + property);
+//         this.name = "PropertyRequiredError";
+//         this.property = property;
+//     }
+// }
+
+// function validateUser(user) {
+//     if (!user.age) {
+//         throw new PropertyRequiredError("age");
+//     }
+//     if (!user.name) {
+//         throw new PropertyRequiredError("name");
+//     }
+// }
+
+// function readUser(json) {
+//     let user;
+
+//     try {
+//         user = JSON.parse(json);
+//     } catch (error) {
+//         if (error instanceof SyntaxError) {
+//             throw new ReadError("Синтаксична помилка", error);
+//         } else {
+//             throw error;
+//         }
+//     }
+
+//     try {
+//         validateUser(user);
+//     } catch (error) {
+//         if (error instanceof ValidationError) {
+//             throw new ReadError("Помилка валідації", error);
+//         } else {
+//             throw error;
+//         }
+//     }
+// }
+
+// try {
+//     readUser('{"age": 25, "name": "John"}');
+//      readUser('{bad json}');
+// } catch (e) {
+//     if (e instanceof ReadError) {
+//         console.log(e);
+//         console.log("Вихідна помилка: " + e.cause);
+//     } else {
+//         throw e;
+//     }
+// }
+
+class Error {
+    constructor(message) {
+        this.message = message;
+        this.name = 'Error';
+        // this.stack = <стек визовов>;
     }
 }
 
-class ValidationError extends Error {
+class FormatError extends SyntaxError {
     constructor(message) {
         super(message);
-        this.name = "ValidationError";
+        this.name = this.constructor.name;
     }
 }
 
-class PropertyRequiredError extends ValidationError {
-    constructor(property) {
-        super("Нема властивості " + property);
-        this.name = "PropertyRequiredError";
-        this.property = property;
-    }
-}
+let error = new FormatError("Помилка программування");
 
-function validateUser(user) {
-    if (!user.age) {
-        throw new PropertyRequiredError("age");
-    }
-    if (!user.name) {
-        throw new PropertyRequiredError("name");
-    }
-}
+console.log(error.message);
+console.log(error.name);
 
-function readUser(json) {
-    let user;
-
-    try {
-        user = JSON.parse(json);
-    } catch (error) {
-        if (error instanceof SyntaxError) {
-            throw new ReadError("Синтаксична помилка", error);
-        } else {
-            throw error;
-        }
-    }
-
-    try {
-        validateUser(user);
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            throw new ReadError("Помилка валідації", error);
-        } else {
-            throw error;
-        }
-    }   
-}
-
-try {
-    readUser('{"age": 25, "name": "John"}');
-     readUser('{bad json}');   
-} catch (e) {
-    if (e instanceof ReadError) {
-        console.log(e);
-        console.log("Вихідна помилка: " + e.cause);
-    } else {
-        throw e;
-    }
-}
+console.log(error instanceof FormatError);
+console.log(error instanceof SyntaxError);
