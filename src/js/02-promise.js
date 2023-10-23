@@ -117,23 +117,39 @@
 //   document.head.append(script);
 // }
 
-function loadScript(src) {
-  return new Promise(
-    function (resolve, reject) {
-      let script = document.createElement('script');
-      script.src = src;
+// function loadScript(src) {
+//   return new Promise(
+//     function (resolve, reject) {
+//       let script = document.createElement('script');
+//       script.src = src;
 
-      script.onload = () => resolve(script);
-      script.onerror = () => reject(new Error(`Помилка завантаження скрипта ${src}`));
+//       script.onload = () => resolve(script);
+//       script.onerror = () => reject(new Error(`Помилка завантаження скрипта ${src}`));
 
-      document.head.append(script);
-    }
-  );
-};
+//       document.head.append(script);
+//     }
+//   );
+// };
 
-let promise = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js");
-promise.then(
-  script => alert(`${script.src} downloaded`),
-  error => alert(`Error: ${error.message}`)
-);
-promise.then(script => alert('one more processor'));
+// let promise = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js");
+// promise.then(
+//   script => alert(`${script.src} downloaded`),
+//   error => alert(`Error: ${error.message}`)
+// );
+// promise.then(script => alert('one more processor'));
+
+// function delay(ms) {
+//   let promise = new Promise(
+//     (resolve, reject) => {
+//       setTimeout(() => {
+//         resolve()
+//       }, ms);
+//     });
+//   return promise;
+// }
+
+// function delay(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }
+
+// delay(3000).then(() => alert("Executed in 3 sec"));
