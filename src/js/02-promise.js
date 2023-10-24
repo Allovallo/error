@@ -153,3 +153,129 @@
 // }
 
 // delay(3000).then(() => alert("Executed in 3 sec"));
+
+// new Promise(function (resolve, reject) {
+//   setTimeout(() => resolve(1), 1000);
+// })
+//   .then(function (result) {
+//     alert(result);
+//     return result * 2;
+//   })
+//   .then(function (result) {
+//     alert(result);
+//     return result * 2;
+//   })
+//   .then(function (result) {
+//     alert(result);
+//     return result * 2;
+//   });
+
+// new Promise(function (resolve, reject) {
+//   setTimeout(() => resolve(1), 1000);
+// })
+//   .then(function (result) {
+//     alert(result); // 1
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => resolve(result * 2), 1000);
+//     });
+//   })
+//   .then(function (result) {
+//     alert(result); // 2
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => resolve(result * 2), 1000);
+//     });
+//   })
+//   .then(function (result) {
+//     alert(result); // 4
+//   });
+
+// new Promise(function (resolve, reject) {
+//   setTimeout(() => {
+//     resolve(1);
+//   }, 1000);
+// })
+//   .then(function (result) {
+//     console.log(result);
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         resolve(result * 2);
+//       }, 1000);
+//     });
+//   })
+//   .then(function (result) {
+//     console.log(result);
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         resolve(result * 2);
+//       }, 1000);
+//     });
+//   })
+//   .then(function (result) {
+//     console.log(result);
+//   });
+
+// loadScript('/article/promise-chaining/one.js')
+//   .then(function (script) {
+//     return loadScript('/article/promise-chaining/two.js');
+//   })
+//   .then(function (script) {
+//     return loadScript('/article/promise-chaining/three.js');
+//   })
+//   .then(function (script) {
+//     // викличемо функції, оголошені в скриптах
+//     // щоб показати, що вони дійсно завантажені
+//     one();
+//     two();
+//     three();
+//   });
+
+// loadScript('/article/promise-chaining/one.js')
+//   .then(script => loadScript('/article/promise-chaining/two.js'))
+//   .then(script => loadScript('/article/promise-chaining/three.js'))
+//   .then(script => {
+//     // скрипти завантажені, ми можемо використовувати оголошені там функції
+//     one();
+//     two();
+//     three();
+//   });
+
+// loadScript('/article/promise-chaining/one.js').then(script1 => {
+//   loadScript('/article/promise-chaining/two.js').then(script2 => {
+//     loadScript('/article/promise-chaining/three.js').then(script3 => {
+//       // ця функція має доступ до змінних script1, script2 і script3
+//       one();
+//       two();
+//       three();
+//     });
+//   });
+// });
+
+// class Thenable {
+//   constructor(num) {
+//     this.num = num;
+//   }
+//   then(resolve, reject) {
+//     alert(resolve); // function() { native code }
+//     // буде успішно виконано з аргументом this.num*2 через 1 секунду
+//     setTimeout(() => resolve(this.num * 2), 1000); // (**)
+//   }
+// }
+
+// new Promise(resolve => resolve(1))
+//   .then(result => {
+//     return new Thenable(result); // (*)
+//   })
+//   .then(alert); // показує 2 через 1000 мс
+
+fetch('/article/promise-chaining/user.json')
+  // .then в коде ниже выполняется, когда удалённый сервер отвечает
+  .then(function (response) {
+    // response.text() возвращает новый промис,
+    // который выполняется и возвращает полный ответ сервера,
+    // когда он загрузится
+    return response.text();
+  })
+  .then(function (text) {
+    // ...и здесь содержимое полученного файла
+    alert(text); // {"name": "iliakan", isAdmin: true}
+  });
