@@ -267,15 +267,37 @@
 //   })
 //   .then(alert); // показує 2 через 1000 мс
 
-fetch('/article/promise-chaining/user.json')
-  // .then в коде ниже выполняется, когда удалённый сервер отвечает
-  .then(function (response) {
-    // response.text() возвращает новый промис,
-    // который выполняется и возвращает полный ответ сервера,
-    // когда он загрузится
-    return response.text();
-  })
-  .then(function (text) {
-    // ...и здесь содержимое полученного файла
-    alert(text); // {"name": "iliakan", isAdmin: true}
-  });
+// fetch('/article/promise-chaining/user.json')
+//   // .then в коде ниже выполняется, когда удалённый сервер отвечает
+//   .then(function (response) {
+//     // response.text() возвращает новый промис,
+//     // который выполняется и возвращает полный ответ сервера,
+//     // когда он загрузится
+//     return response.text();
+//   })
+//   .then(function (text) {
+//     // ...и здесь содержимое полученного файла
+//     alert(text); // {"name": "iliakan", isAdmin: true}
+//   });
+
+// fetch('../user.json')
+//   .then(response => response.json())
+//   .then(user => alert(user.name));
+
+// // Запитуємо user.json
+// fetch('/article/promise-chaining/user.json')
+//   // Завантажуємо дані у форматі json
+//   .then(response => response.json())
+//   // Робимо запит до GitHub
+//   .then(user => fetch(`https://api.github.com/users/${user.name}`))
+//   // Завантажуємо відповідь у форматі json
+//   .then(response => response.json())
+//   // Показуємо аватар (githubUser.avatar_url) протягом 3 секунд (можливо, з анімацією)
+//   .then(githubUser => {
+//     let img = document.createElement('img');
+//     img.src = githubUser.avatar_url;
+//     img.className = 'promise-avatar-example';
+//     document.body.append(img);
+
+//     setTimeout(() => img.remove(), 3000); // (*)
+//   });
