@@ -301,3 +301,157 @@
 
 //     setTimeout(() => img.remove(), 3000); // (*)
 //   });
+
+// fetch('https://uk.javascript.info/promise-chaining')
+//   .then(response => response.json)
+//   .catch(err => alert(err));
+
+// fetch('/article/promise-chaining/user.json')
+//   .then(response => response.json())
+//   .then(user => fetch(`https://api.github.com/users/${user.name}`))
+//   .then(response => response.json())
+//   .then(
+//     githubUser =>
+//       new Promise((resolve, reject) => {
+//         let img = document.createElement('img');
+//         img.src = githubUser.avatar_url;
+//         img.className = 'promise-avatar-example';
+//         document.body.append(img);
+
+//         setTimeout(() => {
+//           img.remove();
+//           resolve(githubUser);
+//         }, 3000);
+//       }),
+//   )
+//   .catch(error => alert(error.message));
+
+// fetch('/article/user.json')
+//   .then(response => response.text())
+//   .then(text => alert(text));
+
+// fetch('/article/user.json')
+//   .then(response => response.json())
+//   .then(user => alert(user.name));
+
+// fetch('/article/promise-chaining/user.json') // Запитуємо user.json
+//   .then(response => response.json()) // Завантажуємо дані у форматі json
+//   .then(user => fetch(`https://api.github.com/users/${user.name}`)) // Робимо запит до GitHub
+//   .then(response => response.json()) // Завантажуємо відповідь у форматі json
+//   // Показуємо аватар (githubUser.avatar_url) протягом 3 секунд (можливо, з анімацією)
+//   .then(
+//     githubUser =>
+//       new Promise(function (resolve, reject) {
+//         let img = document.createElement('img');
+//         img.src = githubUser.avatar_url;
+//         img.className = 'promise-avatar-example';
+//         document.body.append(img);
+
+//         setTimeout(() => {
+//           img.remove();
+//           resolve(githubUser);
+//         }, 3000);
+//       }),
+//   )
+//   .then(githubUser => alert(`Закончили показ ${githubUser.name}`));
+
+// function loadJson(url) {
+//   return fetch(url).then(response => response.json());
+// }
+
+// function loadGithubUser(name) {
+//   return fetch(`https://api.github.com/users/${name}`).then(response =>
+//     response.json(),
+//   );
+// }
+
+// function showAvatar(githubUser) {
+//   return new Promise(function (resolve, reject) {
+//     let img = document.createElement('img');
+//     img.src = githubUser.avatar_url;
+//     img.className = 'promise-avatar-example';
+//     document.body.append(img);
+
+//     setTimeout(() => {
+//       img.remove();
+//       resolve(githubUser);
+//     }, 3000);
+//   });
+// }
+
+// loadJson('/article/user.json')
+//   .then(user => loadGithubUser(user.name))
+//   .then(showAvatar)
+//   .then(githubUser => alert(`Показ аватара ${githubUser.name} завершено`));
+
+// fetch('https://no-such-server.blabla')
+//   .then(response => response.json())
+//   .catch(err => alert(err));
+
+// fetch('https://api.github.com/users')
+//   .then(response => response.json())
+//   .then(user => fetch(`https://api.github.com/users/${user.login}`))
+//   .then(response => response.json())
+//   .then(
+//     githubUser =>
+//       new Promise((resolve, reject) => {
+//         let img = document.createElement('img');
+//         img.src = githubUser.avtar_url;
+//         img.className = 'promise-avatar-example';
+//         document.body.append(img);
+
+//         setTimeout(() => {
+//           img.remove();
+//           resolve(githubUser);
+//         }, 3000);
+//       }),
+//   )
+//   .catch(alert);
+
+// new Promise((resolve, reject) => {
+//   resolve('OK!');
+// })
+//   .then(result => {
+//     throw new Error('ERROR!!!');
+//   })
+//   .catch(alert);
+
+// new Promise((resolve, reject) => {
+//   resolve('OK!');
+// })
+//   .then(result => {
+//     blabla();
+//   })
+//   .catch(alert);
+
+// // the execution: catch -> catch
+// new Promise((resolve, reject) => {
+//   throw new Error('Помилка!');
+// })
+//   .catch(function (error) {
+//     // (*)
+//     if (error instanceof URIError) {
+//       // обробляємо помилку
+//     } else {
+//       alert('Не можу обробити цю помилку');
+//       throw error; // прокидуємо цю або іншу помилку в наступний catch
+//     }
+//   })
+//   .then(function () {
+//     /* не виконається */
+//   })
+//   .catch(error => {
+//     // (**)
+//     alert(`Невідома помилка: ${error}`);
+//     // нічого не повертаємо => виконання продовжується в нормальному режимі
+//   });
+
+window.addEventListener('unhandledrejection', function (event) {
+  // об’єкт події має дві спеціальні властивості:
+  alert(event.promise); // [object Promise] - проміс, який згенерував помилку
+  alert(event.reason); // Error: Whoops! - об’єкт помилки, яка не була оброблена
+});
+
+new Promise(function () {
+  throw new Error('Помилка!');
+}); // немає обробника помилок
