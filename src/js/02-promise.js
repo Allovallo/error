@@ -446,12 +446,63 @@
 //     // нічого не повертаємо => виконання продовжується в нормальному режимі
 //   });
 
-window.addEventListener('unhandledrejection', function (event) {
-  // об’єкт події має дві спеціальні властивості:
-  alert(event.promise); // [object Promise] - проміс, який згенерував помилку
-  alert(event.reason); // Error: Whoops! - об’єкт помилки, яка не була оброблена
-});
+// window.addEventListener('unhandledrejection', function (event) {
+//   // об’єкт події має дві спеціальні властивості:
+//   alert(event.promise); // [object Promise] - проміс, який згенерував помилку
+//   alert(event.reason); // Error: Whoops! - об’єкт помилки, яка не була оброблена
+// });
 
-new Promise(function () {
-  throw new Error('Помилка!');
-}); // немає обробника помилок
+// new Promise(function () {
+//   throw new Error('Помилка!');
+// }); // немає обробника помилок
+
+// Promise.all([
+//   new Promise(resolve => setTimeout(() => resolve(1), 2000)),
+//   new Promise(resolve => setTimeout(() => resolve(2), 2000)),
+//   new Promise(resolve => setTimeout(() => resolve(3), 2000)),
+// ]).then(alert);
+
+// let urls = [
+//   'https://api.github.com/users/iliakan',
+//   'https://api.github.com/users/remy',
+//   'https://api.github.com/users/jeresig',
+// ];
+
+// let requests = urls.map(url => fetch(url));
+
+// Promise.all(requests).then(responses =>
+//   responses.forEach(response => alert(`${response.url}: ${response.status}`)),
+// );
+
+// let names = ['iliakan', 'remy', 'jeresig'];
+// let requests = names.map(name => fetch(`https://api.github.com/users/${name}`));
+
+// Promise.all(requests)
+//   .then(responses => {
+//     for (let response of responses) {
+//       alert(`${response.url}: ${response.status}`);
+//     }
+//     return responses;
+//   })
+//   .then(responses => Promise.all(responses.map(r => r.json())))
+//   .then(users => users.forEach(user => alert(user.name)));
+
+// Promise.all(
+//   ['iliakan', 'remy', 'jeresig'].map(name =>
+//     fetch(`https://api.github.com/users/${name}`),
+//   ),
+// )
+//   .then(responses => {
+//     for (let response of responses) {
+//       alert(`${response.url}: ${response.status}`);
+//     }
+//     return responses;
+//   })
+//   .then(responses => Promise.all(responses.map(r => r.json())))
+//   .then(users => users.forEach(user => alert(user.name)));
+
+// Promise.all([
+//   new Promise((resolve, reject) => setTimeout(() => resolve(1), 1000)),
+//   new Promise((resolve, reject) => setTimeout(() => reject(new Error('Very BIG ERROR!')), 2000)),
+//   new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000)),
+// ]).catch(alert);
