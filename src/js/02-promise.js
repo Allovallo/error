@@ -613,24 +613,159 @@
 // }
 
 // f();
-async function showAvatar() {
-  // зчитуємо наш JSON
-  let response = await fetch('/article/promise-chaining/user.json');
-  let user = await response.json();
-  // зчитуємо користувача github
-  let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
-  let githubUser = await githubResponse.json();
-  // показуємо аватар
-  let img = document.createElement('img');
-  img.src = githubUser.avatar_url;
-  img.className = 'promise-avatar-example';
-  document.body.append(img);
 
-  await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+// async function showAvatar() {
+//   // зчитуємо наш JSON
+//   let response = await fetch('/article/promise-chaining/user.json');
+//   let user = await response.json();
+//   // зчитуємо користувача github
+//   let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+//   let githubUser = await githubResponse.json();
+//   // показуємо аватар
+//   let img = document.createElement('img');
+//   img.src = githubUser.avatar_url;
+//   img.className = 'promise-avatar-example';
+//   document.body.append(img);
 
-  img.remove();
+//   await new Promise((resolve, reject) => setTimeout(resolve, 3000));
 
-  return githubUser;
+//   img.remove();
+
+//   return githubUser;
+// }
+
+// showAvatar();
+
+// async function showAvatar() {
+//   let response = await fetch('/article/promise-chaining/user.json');
+//   let user = await response.json();
+
+//   let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+//   let githubUser = await githubResponse.json();
+
+//   let img = document.createElement('img');
+//   img.src = githubUser.avatar_url;
+//   img.className = 'promise-avatar-example';
+//   document.body.append(img);
+
+//   await new Promise((resolve, reject) => setTimeout(resolve, 2000));
+
+//   img.remove();
+
+//   return githubUser;
+// }
+
+// showAvatar();
+
+// class Thenable {
+//   constructor(num) {
+//     this.num = num;
+//   }
+//   then(resolve, reject) {
+//     alert(resolve);
+//     setTimeout(() => resolve(this.num * 2), 1000);
+//   }
+// }
+
+// async function f() {
+//   let result = await new Thenable(1);
+//   alert(result);
+// }
+
+// f();
+
+// async function f() {
+//   return 1;
+// }
+
+// f().then(alert);
+
+// async function f() {
+//   let promise = new Promise((resolve, reject) =>
+//     setTimeout(() => {
+//       resolve('READY!');
+//     }, 1000),
+//   );
+
+//   let result = await promise;
+//   alert(result);
+// }
+
+// f();
+
+// function loadScript(src) {
+//   let script = document.createElement('script');
+//   script.src = src;
+//   document.gead.append(script);
+// }
+
+// loadScript('/my/script.js');
+// // код, написанный после вызова функции loadScript, не будет дожидаться полной загрузки скрипта ...
+
+// function loadScript(src, callback) {
+//   let script = document.createElement('script');
+//   script.src = src;
+//   script.onload = () => callback(script);
+//   document.head.append(script);
+// }
+
+// loadScript(
+//   'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js',
+//   script => {
+//     alert(`Здорово, скрипт ${script.src} загрузился`);
+//     alert(_); // функция, объявленная в загруженном скрипте
+//   },
+// );
+
+// loadScript('/my/script.js', function (script) {
+//   alert(`Відмінно, наш скріпт ${script.src} завантажився!`);
+
+//   loadScript('/my/script2.js', function (script) {
+//     alert(`Відмінно, другий скріпт завантажився!`);
+//   });
+// });
+
+function loadScript(script) {
+  let script = document.createElement('script');
+  script.src = src;
+
+  script.onload = () => callback(null, script);
+  script.onerror = () =>
+    callback(new Error(`Не вдалося завантажити скріпт ${src}`));
+
+  document.head.append(script);
 }
 
-showAvatar();
+// loadScript('/my/script.js', function (error, script) {
+//   if (error) {
+//     //...
+//   } else {
+//     //...
+//   }
+// });
+
+loadScript('1.js', step1);
+
+function step1(error, script) {
+  if (error) {
+    handleError(error);
+  } else {
+    loadScript('2.js', step2);
+  }
+}
+
+function step2(error, script) {
+  if (error) {
+    handleError(error);
+  } else {
+    loadScript('3.js', step3);
+  }
+}
+
+function step3(error, script) {
+  if (error) {
+    handleError(error);
+  } else {
+    //...
+  }
+}
