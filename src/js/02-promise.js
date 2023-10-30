@@ -725,16 +725,16 @@
 //   });
 // });
 
-function loadScript(script) {
-  let script = document.createElement('script');
-  script.src = src;
+// function loadScript(script) {
+//   let script = document.createElement('script');
+//   script.src = src;
 
-  script.onload = () => callback(null, script);
-  script.onerror = () =>
-    callback(new Error(`Не вдалося завантажити скріпт ${src}`));
+//   script.onload = () => callback(null, script);
+//   script.onerror = () =>
+//     callback(new Error(`Не вдалося завантажити скріпт ${src}`));
 
-  document.head.append(script);
-}
+//   document.head.append(script);
+// }
 
 // loadScript('/my/script.js', function (error, script) {
 //   if (error) {
@@ -744,28 +744,33 @@ function loadScript(script) {
 //   }
 // });
 
-loadScript('1.js', step1);
+// loadScript('1.js', step1);
 
-function step1(error, script) {
-  if (error) {
-    handleError(error);
-  } else {
-    loadScript('2.js', step2);
-  }
-}
+// function step1(error, script) {
+//   if (error) {
+//     handleError(error);
+//   } else {
+//     loadScript('2.js', step2);
+//   }
+// }
 
-function step2(error, script) {
-  if (error) {
-    handleError(error);
-  } else {
-    loadScript('3.js', step3);
-  }
-}
+// function step2(error, script) {
+//   if (error) {
+//     handleError(error);
+//   } else {
+//     loadScript('3.js', step3);
+//   }
+// }
 
-function step3(error, script) {
-  if (error) {
-    handleError(error);
-  } else {
-    //...
-  }
-}
+// function step3(error, script) {
+//   if (error) {
+//     handleError(error);
+//   } else {
+//     //...
+//   }
+// }
+
+let promise = new Promise(function (resolve, reject) {
+  resolve(alert('DONE!!!'));
+  setTimeout(() => reject(new Error('WHOOOPS!!!')), 2000);
+});
