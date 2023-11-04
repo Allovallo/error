@@ -770,7 +770,101 @@
 //   }
 // }
 
-let promise = new Promise(function (resolve, reject) {
-  resolve(alert('DONE!!!'));
-  setTimeout(() => reject(new Error('WHOOOPS!!!')), 2000);
-});
+// let promise = new Promise(function (resolve, reject) {
+//   resolve(alert('DONE!!!'));
+//   setTimeout(() => reject(new Error('WHOOOPS!!!')), 2000);
+// });
+
+// promise.then(
+//   result => alert(result),
+//   error => alert(error),
+// );
+
+// let promise = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     reject(new Error('@ERROR@'));
+//   }, 1000);
+// });
+
+// promise.catch(alert);
+
+// new Promise((resolve, reject) => {
+//   // setTimeout(() => resolve(5), 2000);
+//   throw new Error('MegaError');
+// })
+//   .finally(() => alert('Promise is finished'))
+//   // .then(result => alert(result));
+//   .catch(error => alert(error));
+
+// function loadScript(src) {
+//   return new Promise(function (resolve, reject) {
+//     let script = document.createElement('script');
+//     script.src = src;
+
+//     script.onload = () => resolve(script);
+//     script.onerror = () =>
+//       reject(new Error(`Помилка завантаження скріпта ${src}`));
+
+//     document.head.append(script);
+//   });
+// }
+
+// let promise = loadScript(
+//   'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js',
+// );
+
+// promise.then(
+//   script => alert(`${script.src} завантажено!`),
+//   error => alert(`Помилка ${error.message}`),
+// );
+
+// promise.then(script => alert(`Ще один обробник...`));
+
+// function loadJson(url) {
+//   return fetch(url).then(response => {
+//     if (response.status == 200) {
+//       return response.json();
+//     } else {
+//       throw new Error(response.status);
+//     }
+//   });
+// }
+
+// loadJson('https://javascript.info/no-such-user.json').catch(alert); // Error: 404
+
+// async function f() {
+//   let promise = new Promise((resolve, reject) =>
+//     setTimeout(() => {
+//       resolve('READY!!!');
+//     }, 2500),
+//   );
+
+//   let result = await promise;
+//   console.log(result);
+// }
+// f();
+
+async function showAvatar() {
+  // зчитуємо наш JSON
+  let response = await fetch('');
+  let user = await response.json();
+
+  // зчитуємо користувача github
+  let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+  let githubUser = await githubResponse.json();
+
+  // показуємо аватар
+  let img = document.createElement('img');
+  img.src = githubUser.avatar_url;
+  img.className = 'promise-avatar-example';
+  document.body.append(img);
+
+  // очікуємо 3 секунди
+  await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+
+  img.remove();
+
+  return githubUser;
+}
+
+showAvatar();
