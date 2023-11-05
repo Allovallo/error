@@ -820,18 +820,6 @@
 
 // promise.then(script => alert(`Ще один обробник...`));
 
-// function loadJson(url) {
-//   return fetch(url).then(response => {
-//     if (response.status == 200) {
-//       return response.json();
-//     } else {
-//       throw new Error(response.status);
-//     }
-//   });
-// }
-
-// loadJson('https://javascript.info/no-such-user.json').catch(alert); // Error: 404
-
 // async function f() {
 //   let promise = new Promise((resolve, reject) =>
 //     setTimeout(() => {
@@ -844,17 +832,117 @@
 // }
 // f();
 
-class Thenable {
-  constructor(num) {
-    this.num = num;
-  }
-  then(resolve, reject) {
-    alert(resolve);
-    setTimeout(() => resolve(this.num * 2), 2000);
-  }
-}
-async function f() {
-  let result = await new Thenable(1);
-  alert(result);
-}
-f();
+// function loadJson(url) {
+//   return fetch(url).then(response => {
+//     if (response.status == 200) {
+//       return response.json();
+//     } else {
+//       throw new Error(response.status);
+//     }
+//   });
+// }
+
+// loadJson('https://javascript.info/no-such-user.json').catch(alert); // Error: 404
+
+// async function loadJson(url) {
+//   let response = await fetch(url);
+//   if (response.status == 200) {
+//     let json = await response.json();
+//     return json;
+//   }
+//   throw new Error(response.status);
+// }
+// loadJson('https://javascript.info/no-such-user.json').catch(alert); // Error: 404
+
+// class HttpError extends Error {
+//   constructor(response) {
+//     super(`${response.status} for ${response.url}`);
+//     this.name = 'HttpError';
+//     this.response = response;
+//   }
+// }
+
+// function loadJson(url) {
+//   return fetch(url).then(response => {
+//     if (response.status == 200) {
+//       return response.json();
+//     } else {
+//       throw new HttpError(response);
+//     }
+//   });
+// }
+
+// // Запитуйте ім’я користувача, поки github не поверне дійсного користувача
+// function demoGithubUser() {
+//   let name = prompt('Введіть ім’я?', 'iliakan');
+
+//   return loadJson(`https://api.github.com/users/${name}`)
+//     .then(user => {
+//       alert(`Ім’я та прізвище: ${user.name}.`);
+//       return user;
+//     })
+//     .catch(err => {
+//       if (err instanceof HttpError && err.response.status == 404) {
+//         alert('Такого користувача не існує, будь ласка, введіть ще раз.');
+//         return demoGithubUser();
+//       } else {
+//         throw err;
+//       }
+//     });
+// }
+
+// demoGithubUser();
+
+// class HttpError extends Error {
+//   constructor(response) {
+//     super(`${response.status} for ${response.url}`);
+//     this.name = 'HttpError';
+//     this.response = response;
+//   }
+// }
+
+// async function loadJson(url) {
+//   let response = await fetch(url);
+//   if (response.status == 200) {
+//     return response.json();
+//   } else {
+//     throw new HttpError(response);
+//   }
+// }
+
+// // Запитуйте ім’я користувача, поки github не поверне дійсного користувача
+// async function demoGithubUser() {
+//   let user;
+//   while (true) {
+//     let name = prompt('Введіть ім’я?', 'iliakan');
+
+//     try {
+//       user = await loadJson(`https://api.github.com/users/${name}`);
+//       break; // помилки немає, виходимо з циклу
+//     } catch (err) {
+//       if (err instanceof HttpError && err.response.status == 404) {
+//         // цикл продовжиться після сповіщення
+//         alert('Такого користувача не існує, будь ласка, введіть ще раз.');
+//       } else {
+//         // невідома помилка, перепрокидуємо її
+//         throw err;
+//       }
+//     }
+//   }
+
+//   alert(`Ім’я та прізвище: ${user.name}.`);
+//   return user;
+// }
+
+// demoGithubUser();
+
+// async function wait() {
+//   await new Promise(resolve => setTimeout(resolve, 1000));
+//   return 10;
+// }
+
+// function f() {
+//   wait().then(result => alert(result));
+// }
+
+// f();
